@@ -1,0 +1,56 @@
+@url = http://localhost:4000
+@apiKey = {{$dotenv API_KEY}}
+
+### ! Login
+# @name login
+# @prompt username Type your username
+# @prompt password Type your password
+POST {{url}}/auth/login HTTP/1.1
+X-api-key: {{apiKey}}
+Content-Type: application/json
+
+{
+    "username": "{{username}}",
+    "password": "{{password}}"
+}
+
+@token = {{login.response.body.access_token}} 
+
+### ! Get All Posts
+GET {{url}}/posts HTTP/1.1
+X-api-key: {{apiKey}}
+Authorization: Bearer {{token}}
+
+### ! Get Single Post
+# @prompt postId Id of the post
+GET {{url}}/posts/{{postId}} HTTP/1.1
+X-api-key: {{apiKey}}
+Authorization: Bearer {{token}}
+
+### ! Create a New Post
+POST {{url}}/posts HTTP/1.1
+X-api-key: {{apiKey}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "An awesome post!"
+}
+
+### ! Delete a Post by Id
+# @prompt postId Id of the post to delete
+DELETE {{url}}/posts/{{postId}} HTTP/1.1
+X-api-key: {{apiKey}}
+Authorization: Bearer {{token}}
+
+### ! Update a Post by Id
+# @prompt postId Id of the post to update
+# @prompt title New title of the post
+PUT {{url}}/posts/{{postId}} HTTP/1.1
+X-api-key: {{apiKey}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "{{title}}"
+}
